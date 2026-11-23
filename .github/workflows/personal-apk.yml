@@ -34,6 +34,9 @@ jobs:
           ref: f3829d3d162eb267a792d43b3c8541e64effc28d
           path: miuix
 
+      - name: Patch Miuix Gradle feature previews
+        run: sed -E -i '/NO_IMPLICIT_LOOKUP_IN_PARENT_PROJECTS|ENHANCED_GRAPH_ORDERING/d' miuix/settings.gradle.kts
+
       - name: Accept Android SDK licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
 
