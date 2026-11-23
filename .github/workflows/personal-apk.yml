@@ -27,13 +27,23 @@ jobs:
       - name: Set up Gradle cache
         uses: gradle/actions/setup-gradle@v6
 
+      - name: Checkout Miuix source
+        uses: actions/checkout@v4
+        with:
+          repository: compose-miuix-ui/miuix
+          ref: f3829d3d162eb267a792d43b3c8541e64effc28d
+          path: miuix
+
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+
       - name: Grant execute permission
         run: chmod +x gradlew
 
       - name: Build dev APK
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: ./gradlew :app:assembleDev --no-daemon --stacktrace
+        run: ./gradlew :app:assembleDev -Pbili.miuix.source="$GITHUB_WORKSPACE/miuix" --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

@@ -95,7 +95,7 @@ internal class PiliPlayerSleepTimer private constructor(player: Player, context:
         if (exoPlayer != null) PlayerBackgroundPlaybackSessions.pauseForSleepTimer(exoPlayer)
         else player?.pause()
         if (exitApp) activityRef.get()?.finishAndRemoveTask()
-        else Toast.makeText(appContext, "定时结束，已暂停播放", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(appContext, "已暂停播放", Toast.LENGTH_SHORT).show()
     }
 
     companion object {
