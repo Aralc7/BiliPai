@@ -34,8 +34,10 @@ jobs:
           ref: f3829d3d162eb267a792d43b3c8541e64effc28d
           path: miuix
 
-      - name: Patch Miuix Gradle feature previews
-        run: sed -E -i '/NO_IMPLICIT_LOOKUP_IN_PARENT_PROJECTS|ENHANCED_GRAPH_ORDERING/d' miuix/settings.gradle.kts
+      - name: Patch Miuix build for BiliPai AGP
+        run: |
+          sed -E -i '/NO_IMPLICIT_LOOKUP_IN_PARENT_PROJECTS|ENHANCED_GRAPH_ORDERING/d' miuix/settings.gradle.kts
+          sed -E -i 's/^agp = "9\.5\.1"/agp = "9.3.2"/' miuix/gradle/libs.versions.toml
 
       - name: Accept Android SDK licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
