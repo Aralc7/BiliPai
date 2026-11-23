@@ -1,0 +1,44 @@
+name: Build Personal APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - personal
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Grant execute permission
+        run: chmod +x gradlew
+
+      - name: Build dev APK
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: ./gradlew :app:assembleDev --no-daemon --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiliPai-personal-dev
+          path: app/build/outputs/bilipai/dev/*.apk
+          if-no-files-found: error
+          retention-days: 30
